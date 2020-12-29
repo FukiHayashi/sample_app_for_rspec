@@ -1,0 +1,15 @@
+current directory: /Users/hayashifuki/environment/runteq/learning_advanced/rspec_test/sample_app_for_rspec/vendor/bundle/ruby/2.6.0/gems/debug_inspector-0.0.3/ext/debug_inspector
+/Users/hayashifuki/.rbenv/versions/2.6.4/bin/ruby -I /Users/hayashifuki/.rbenv/versions/2.6.4/lib/ruby/2.6.0 -r ./siteconf20201229-2491-11p29t2.rb extconf.rb
+creating Makefile
+
+current directory: /Users/hayashifuki/environment/runteq/learning_advanced/rspec_test/sample_app_for_rspec/vendor/bundle/ruby/2.6.0/gems/debug_inspector-0.0.3/ext/debug_inspector
+make "DESTDIR=" clean
+
+current directory: /Users/hayashifuki/environment/runteq/learning_advanced/rspec_test/sample_app_for_rspec/vendor/bundle/ruby/2.6.0/gems/debug_inspector-0.0.3/ext/debug_inspector
+make "DESTDIR="
+compiling debug_inspector.c
+linking shared-object debug_inspector.bundle
+
+current directory: /Users/hayashifuki/environment/runteq/learning_advanced/rspec_test/sample_app_for_rspec/vendor/bundle/ruby/2.6.0/gems/debug_inspector-0.0.3/ext/debug_inspector
+make "DESTDIR=" install
+/usr/bin/install -c -m 0755 debug_inspector.bundle ./.gem.20201229-2491-1hwar7c
