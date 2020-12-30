@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :task do
     user
-    title {"title"}
+    sequence(:title, "title_1")
     status {:todo}
   end
 end
