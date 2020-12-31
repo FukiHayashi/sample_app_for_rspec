@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe "Tasks", type: :system do
   describe 'ログイン前' do
-    describe 'ユーザー新規登録' , type: :doing do
+    describe 'ユーザー新規登録' do
       context 'フォームの入力値が正常' do
         it 'ユーザーの新規作成が成功する' do
-          user_with_all_infomation = FactoryBot.build(:user)
+          user_with_all_infomation = build(:user)
           sign_up_as(user_with_all_infomation)
           expect(page).to have_content 'User was successfully created.'
           expect(current_path).to eq login_path
@@ -13,7 +13,7 @@ RSpec.describe "Tasks", type: :system do
       end
       context 'メールアドレスが未入力' do
         it 'ユーザーの新規作成が失敗する' do
-          user_without_email = FactoryBot.build(:user, email: nil)
+          user_without_email = build(:user, email: nil)
           sign_up_as(user_without_email)
           user_without_email.errors do |error|
             expect(page).to have_content error
@@ -22,7 +22,7 @@ RSpec.describe "Tasks", type: :system do
       end
       context '登録済のメールアドレスを使用' do
         it 'ユーザーの新規作成が失敗する' do
-          user_with_resisterd_email = FactoryBot.create(:user)
+          user_with_resisterd_email = create(:user)
           sign_up_as(user_with_resisterd_email)
           user_with_resisterd_email.errors do |error|
             expect(page).to have_content error
@@ -31,10 +31,13 @@ RSpec.describe "Tasks", type: :system do
       end
     end
 
-    describe 'マイページ' do
+    describe 'マイページ' , type: :doing do
       context 'ログインしていない状態' do
         it 'マイページへのアクセスが失敗する' do
-
+          user = create(:user)
+          visit user_path(user)
+          expect(page).to have_content 'Login required'
+          expect(current_path).to eq login_path
         end
       end
     end
