@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Tasks", type: :system do
+RSpec.describe "Users", type: :system do
   describe 'ログイン前' do
     describe 'ユーザー新規登録' do
       context 'フォームの入力値が正常' do
@@ -31,7 +31,7 @@ RSpec.describe "Tasks", type: :system do
       end
     end
 
-    describe 'マイページ' , type: :doing do
+    describe 'マイページ' do
       context 'ログインしていない状態' do
         it 'マイページへのアクセスが失敗する' do
           user = create(:user)
@@ -43,26 +43,49 @@ RSpec.describe "Tasks", type: :system do
     end
   end
 
-  describe 'ログイン後' do
+  describe 'ログイン後' , type: :doing do
+    before do
+      @user = create(:user)
+      @user.password = 'password'
+      sign_in_as(@user)
+    end
     describe 'ユーザー編集' do
+      before do
+        visit edit_user_path(@user)
+      end
       context 'フォームの入力値が正常' do
         it 'ユーザーの編集が成功する' do
-
+          @user.email = 'edited@example.com'
+          fill_edit_user_info(@user)
+          expect(page).to have_content @user.email
+          expect(page).to have_content 'User was successfully updated.'
+          expect(current_path).to eq user_path(@user)
         end
       end
       context 'メールアドレスが未入力' do
         it 'ユーザーの編集が失敗する' do
-
+          @user.email = nil
+          fill_edit_user_info(@user)
+          @user.errors do |error|
+            expect(page).to have_content error
+          end
         end
       end
       context '登録済のメールアドレスを使用' do
         it 'ユーザーの編集が失敗する' do
-
+          resistered_user = create(:user)
+          @user.email = resistered_user.email
+          fill_edit_user_info(@user)
+          @user.errors do |error|
+            expect(page).to have_content error
+          end
         end
       end
       context '他ユーザーの編集ページにアクセス' do
         it '編集ページへのアクセスが失敗する' do
-
+          another_user = create(:user)
+          visit edit_user_path(another_user)
+          expect(page).to have_content 'Forbidden access.'
         end
       end
     end
