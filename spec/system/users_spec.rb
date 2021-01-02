@@ -32,9 +32,9 @@ RSpec.describe "Users", type: :system do
     end
 
     describe 'マイページ' do
+      let(:user) { create(:user) }
       context 'ログインしていない状態' do
         it 'マイページへのアクセスが失敗する' do
-          user = create(:user)
           visit user_path(user)
           expect(page).to have_content 'Login required'
           expect(current_path).to eq login_path
@@ -43,9 +43,10 @@ RSpec.describe "Users", type: :system do
     end
   end
 
-  describe 'ログイン後' , type: :doing do
+  describe 'ログイン後' do
+    let(:user) { create(:user) }
     before do
-      @user = create(:user)
+      @user = user
       @user.password = 'password'
       sign_in_as(@user)
     end
@@ -93,7 +94,19 @@ RSpec.describe "Users", type: :system do
     describe 'マイページ' do
       context 'タスクを作成' do
         it '新規作成したタスクが表示される' do
-
+          task = build(:task, user: @user)
+          deadline = DateTime.current
+          visit new_task_path
+          fill_in 'Title', with: task.title
+          fill_in 'Content', with: task.content
+          select task.status, from: 'Status'
+          fill_in 'Deadline', with: deadline
+          find_button('Create Task').click
+          expect(page).to have_content 'Task was successfully created.'
+          expect(page).to have_content task.title
+          expect(page).to have_content task.content
+          expect(page).to have_content task.status.to_s
+          expect(page).to have_content deadline.strftime('%Y/%-m/%-d %-H:%-M')
         end
       end
     end
