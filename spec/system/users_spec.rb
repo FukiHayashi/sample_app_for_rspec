@@ -91,21 +91,15 @@ RSpec.describe "Users", type: :system do
     end
 
     describe 'マイページ' do
+      let(:task) { create(:task, user: @user) }
       context 'タスクを作成' do
+        before do
+          @task = task
+          visit user_path(@user)
+        end
         it '新規作成したタスクが表示される' do
-          task = build(:task, user: @user)
-          deadline = DateTime.current
-          visit new_task_path
-          fill_in 'Title', with: task.title
-          fill_in 'Content', with: task.content
-          select task.status, from: 'Status'
-          fill_in 'Deadline', with: deadline
-          find_button('Create Task').click
-          expect(page).to have_content 'Task was successfully created.'
-          expect(page).to have_content task.title
-          expect(page).to have_content task.content
-          expect(page).to have_content task.status.to_s
-          expect(page).to have_content deadline.strftime('%Y/%-m/%-d %-H:%-M')
+          expect(page).to have_content @task.title
+          expect(page).to have_content @task.status.to_s
         end
       end
     end
