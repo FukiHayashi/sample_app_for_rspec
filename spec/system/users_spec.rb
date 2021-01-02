@@ -47,7 +47,6 @@ RSpec.describe "Users", type: :system do
     let(:user) { create(:user) }
     before do
       @user = user
-      @user.password = 'password'
       sign_in_as(@user)
     end
     describe 'ユーザー編集' do
